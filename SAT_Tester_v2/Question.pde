@@ -5,9 +5,9 @@ class Question {
   
   // To Do:
   // ---
-  /// Fix allignment of text (not sure how text is exactly alligned, further test it)
+  // Fix allignment of text (not sure how text is exactly alligned, further test it)
+  // Scale font based on length of questions (& answers?)
   // --- 
-  
   
   int selectedAnswer;
   PFont aFont;
@@ -65,7 +65,7 @@ class Question {
     }
   }
   
-  void update() {
+  int update() {
     for (int i = 0; i < buttons.length; i++) {
      buttons[i].update();
      if (buttons[i].isSelected && selectedAnswer != i) { 
@@ -74,7 +74,9 @@ class Question {
       for (int j = 0; j < buttons.length; j++)
        if (j != i)
         buttons[j].isSelected = false;
+      return i;
     }
   }
+  return -1;
  }
 }

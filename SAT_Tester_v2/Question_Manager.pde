@@ -11,8 +11,8 @@ class Question_Manager {
   
   Question_Manager() {
     currentQuestion = 0;
-    nextButton = new RectButton(1180, 680, width, height, 135, true, false);
-    lastButton = new RectButton(0, 680, 100, height, 135, true, false);
+    nextButton = new RectButton("Next", width-130, height-50, 130, 50, 135, true, false);
+    lastButton = new RectButton("Previous", 0, height-50, 130, 50, 135, true, false);
     answerTable = new Table();
     answerTable.addColumn("Question", Table.INT);
     answerTable.addColumn("Answer", Table.INT);
@@ -27,8 +27,8 @@ class Question_Manager {
   
   Question_Manager(String testName) {
     currentQuestion = 0;
-    nextButton = new RectButton(1180, 680, width, height, 135, true, false);
-    lastButton = new RectButton(0, 680, 100, height, 135, true, false);
+    nextButton = new RectButton("Next", 1180, 680, width, height, 135, true, false);
+    lastButton = new RectButton("Previous", 0, 680, 100, height, 135, true, false);
     answerTable = new Table();
     answerTable.addColumn("Question", Table.INT);
     answerTable.addColumn("Answer", Table.INT);

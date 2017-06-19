@@ -15,6 +15,8 @@ class Question {
   String question;
   String[] answers;
   
+  // This is a hacky solution for now.
+  String[] letters = new String[] {"A", "B", "C", "D"};
   
   Question(String question_, String answers_[]) {
     aFont = createFont("Arial", 24);
@@ -22,9 +24,9 @@ class Question {
     answers = new String[4];
     question = question_;
     arrayCopy(answers_, answers);
-    buttons[0] = new CircleButton(156, 100, 50, 135, false);
+    buttons[0] = new CircleButton("0", 156, 100, 50, 135, false);
     for (int i = 1; i < buttons.length; i++) {
-      buttons[i] = new CircleButton(256, 200 + 100 * i, 50, 135); 
+      buttons[i] = new CircleButton(letters[i-1], 256, 200 + 100 * i, 50, 135); 
     }
   }
   
@@ -34,9 +36,9 @@ class Question {
     answers = new String[4];
     question = question_;
     answers = new String[] {ans1, ans2, ans3, ans4};
-    buttons[0] = new CircleButton(156, 100, 50, 135, false);
+    buttons[0] = new CircleButton("0", 156, 100, 50, 135, false);
     for (int i = 1; i < buttons.length; i++) 
-     buttons[i] = new CircleButton(256, 200 + 100 * i, 50, 135);   
+     buttons[i] = new CircleButton(letters[i-1], 256, 200 + 100 * i, 50, 135);   
   }
   
    Question(String question_, int ans1, int ans2, int ans3, int ans4) {
@@ -45,9 +47,9 @@ class Question {
     answers = new String[4];
     question = question_;
     answers = new String[] {str(ans1), str(ans2), str(ans3), str(ans4)};
-    buttons[0] = new CircleButton(156, 100, 50, 135, false);
+    buttons[0] = new CircleButton("0", 156, 100, 50, 135, false);
     for (int i = 1; i < buttons.length; i++) 
-     buttons[i] = new CircleButton(256, 200 + 100 * i, 50, 135); 
+     buttons[i] = new CircleButton(letters[i-1], 256, 200 + 100 * i, 50, 135); 
   }
   
   void display() {

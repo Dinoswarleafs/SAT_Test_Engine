@@ -21,7 +21,7 @@ class Main_Menu {
    folder = dataFile("/testing/test_questions/");
    mFont = createFont("Arial", 150);
    bFont = createFont("Arial", 32);
-   startButton = new RectButton(width/2 - 100, height * 3 / 4, 200, 50, 135, true, false); 
+   startButton = new RectButton("Start", width/2 - 100, height * 3 / 4, 200, 50, 135, true, false); 
    testAmount = countFiles();
    testButton = new RectButton[testAmount];
    QM = new Question_Manager();
@@ -29,11 +29,11 @@ class Main_Menu {
    float buttonSpace = (float) 1/8 * sectionLength;
    if (testAmount % 2 == 0) {
     for (int i = 0; i < testAmount / 2; i++)
-     testButton[i] = new RectButton(i * sectionLength + buttonSpace, buttonSpace, 
+     testButton[i] = new RectButton("SAT " + (i+1), i * sectionLength + buttonSpace, buttonSpace, 
                                     sectionLength * 3/4, sectionLength * 3/4, 135, true, false);
    }
     for (int i = testAmount / 2; i < testAmount; i++) {
-     testButton[i] = new RectButton((i - testAmount/2)  * sectionLength + buttonSpace, buttonSpace + height / 2,
+     testButton[i] = new RectButton("SAT " + (i+1), (i - testAmount/2)  * sectionLength + buttonSpace, buttonSpace + height / 2,
                                      sectionLength * 3/4, sectionLength * 3/4, 135, true, false); 
     }
   }
@@ -54,8 +54,8 @@ class Main_Menu {
      testButton[i].display();
      if (testButton[i].isOver) fill(101, 209, 205);
      else fill(131, 239, 235);
-     text("SAT " + (i + 1), testButton[i].location.x + (float) (testButton[i].size.x / 2), 
-                      testButton[i].location.y + (float) (testButton[i].size.y / 2));
+     //text("SAT " + (i + 1), testButton[i].location.x + (float) (testButton[i].size.x / 2), 
+     //               testButton[i].location.y + (float) (testButton[i].size.y / 2));
     }
      break;
     case 2 : 

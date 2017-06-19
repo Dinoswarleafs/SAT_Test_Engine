@@ -9,11 +9,13 @@ abstract class Button {
   /// Nothing RN
   // ---
  
+  String text;
   PVector location, size;
   color nColor, hColor; // nColor is the "normal" color, hColor is the highlighted color
   boolean isOver, isSelected, isSelectable;
   
-  Button(float locX_, float locY_, float sizeX_, float sizeY_, color nColor_) {
+  Button(String nText, float locX_, float locY_, float sizeX_, float sizeY_, color nColor_) {
+    text = nText;
     location = new PVector(locX_, locY_);
     size     = new PVector(sizeX_, sizeY_);
     nColor   = nColor_; 
@@ -21,7 +23,8 @@ abstract class Button {
     isSelectable = true;
   }
   
-  Button(float locX_, float locY_, float sizeX_, float sizeY_, color nColor_, boolean isSelectable_) {
+  Button(String nText, float locX_, float locY_, float sizeX_, float sizeY_, color nColor_, boolean isSelectable_) {
+    text = nText;
     location = new PVector(locX_, locY_);
     size     = new PVector(sizeX_, sizeY_);
     nColor   = nColor_; 
@@ -32,12 +35,12 @@ abstract class Button {
 
 class CircleButton extends Button {
  
- CircleButton(float locX_, float locY_, float diameter_, color nColor_) {
-  super(locX_, locY_, diameter_, diameter_, nColor_); 
+ CircleButton(String nText, float locX_, float locY_, float diameter_, color nColor_) {
+  super(nText, locX_, locY_, diameter_, diameter_, nColor_); 
  }
  
- CircleButton(float locX_, float locY_, float diameter_, color nColor_, boolean isSelectable_) {
-  super(locX_, locY_, diameter_, diameter_, nColor_, isSelectable_); 
+ CircleButton(String nText, float locX_, float locY_, float diameter_, color nColor_, boolean isSelectable_) {
+  super(nText, locX_, locY_, diameter_, diameter_, nColor_, isSelectable_); 
  }
  
  void update() {
@@ -53,6 +56,10 @@ class CircleButton extends Button {
    fill(nColor);
   else fill(hColor); 
   ellipse(location.x, location.y, size.x, size.y);
+  fill(0,0,0);
+  textSize(24);
+  textAlign(CENTER);
+  text(text, location.x, location.y+(size.y/6));
  }
  
  boolean overButton() {
@@ -71,13 +78,13 @@ class RectButton extends Button {
   
  boolean isHoldable;
  
- RectButton(float locX_, float locY_, float sizeX, float sizeY, color nColor_) {
-  super(locX_, locY_, sizeX, sizeY, nColor_); 
+ RectButton(String nText, float locX_, float locY_, float sizeX, float sizeY, color nColor_) {
+  super(nText, locX_, locY_, sizeX, sizeY, nColor_); 
   isHoldable = true;
  }
  
- RectButton(float locX_, float locY_, float sizeX, float sizeY, color nColor_, boolean isSelectable_, boolean isHeld_) {
-  super(locX_, locY_, sizeX, sizeY, nColor_, isSelectable_); 
+ RectButton(String nText, float locX_, float locY_, float sizeX, float sizeY, color nColor_, boolean isSelectable_, boolean isHeld_) {
+  super(nText, locX_, locY_, sizeX, sizeY, nColor_, isSelectable_); 
   isHoldable = isHeld_;
  }
  
@@ -96,6 +103,11 @@ class RectButton extends Button {
    fill(nColor);
   else fill(hColor); 
   rect(location.x, location.y, size.x, size.y);
+  textAlign(CENTER);
+  textSize(25+(.03*size.x));
+  fill(0,0,0);
+  text(text, location.x+(size.x/2), location.y+(size.y/2)+12);
+  println(text);
  }
  
  boolean overButton() {

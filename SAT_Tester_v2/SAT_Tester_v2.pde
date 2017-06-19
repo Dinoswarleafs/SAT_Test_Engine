@@ -1,12 +1,12 @@
-QuestionManager testManager;
+Main_Menu main;
 
 void setup() {
   size(1280, 720);
-  testManager = new QuestionManager();
+  main = new Main_Menu();
 }
 
 void draw() {
  background(0); 
- testManager.update();
- testManager.display();
+ main.display();
+ main.update();
 }

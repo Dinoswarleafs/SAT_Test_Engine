@@ -10,7 +10,7 @@ class Question {
   // --- 
   
   int selectedAnswer;
-  PFont aFont;
+  PFont aFont, qFont;
   CircleButton[] buttons;
   String question;
   String[] answers;
@@ -54,7 +54,7 @@ class Question {
     for (int i = 0; i < buttons.length; i++)
      buttons[i].display();
     // Text Attributes
-    textFont(aFont);
+    textFont(aFont);    
     textAlign(LEFT);
     fill(255);
     // Drawing text FIX ALLIGNMENT

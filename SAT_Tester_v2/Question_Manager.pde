@@ -1,6 +1,7 @@
 class Question_Manager {
  
   ArrayList<Question> Questions = new ArrayList<Question>();
+  int currentMode;
   int currentQuestion;
   int previousAnswer, selectedAnswer;
   RectButton nextButton, lastButton;
@@ -17,12 +18,6 @@ class Question_Manager {
     answerTable.addColumn("Question", Table.INT);
     answerTable.addColumn("Answer", Table.INT);
     filename = "data/testing/user_answers/test_" + year() + "_" + month() + "_" + day() + "_" + hour() + "_" + minute() + ".csv";                               
-    for (int i = 0; i < Questions.size(); i++) {
-     questionRow = answerTable.addRow();
-     questionRow.setInt("Question", i);
-     questionRow.setInt("Answer", 0);
-     saveTable(answerTable, filename);
-    }
   }
   
   Question_Manager(String testName) {
@@ -34,12 +29,6 @@ class Question_Manager {
     answerTable.addColumn("Answer", Table.INT);
     loadQuestions("data/testing/test_questions/" + testName + ".csv");
     filename = "data/testing/user_answers/test_" + year() + "_" + month() + "_" + day() + "_" + hour() + "_" + minute() + ".csv";                               
-    for (int i = 0; i < Questions.size(); i++) {
-     questionRow = answerTable.addRow();
-     questionRow.setInt("Question", i);
-     questionRow.setInt("Answer", 0);
-     saveTable(answerTable, filename);
-    }
   }
   
   void update() {
@@ -70,13 +59,21 @@ class Question_Manager {
   }
   
   void loadQuestions(String filename_) {
-    println(filename_);
     Table tempTable = loadTable("/testing/test_questions/" + filename_ + ".csv", "header");
     TableRow tempRow;
+    boolean imageQuestion;
+    boolean answerQuestion;
     for (int i = 0; i < tempTable.getRowCount(); i++) {
-      tempRow = tempTable.getRow(i);
-      Questions.add(new Question(tempRow.getString(0), tempRow.getString(1), tempRow.getString(2), tempRow.getString(3), tempRow.getString(4)));
-    }    
-  }  
-  
+      tempRow = tempTable.getRow(i);      
+      imageQuestion = (tempRow.getString(6).equals("T")) ? true : false;
+      answerQuestion = (tempRow.getString(7).equals("T")) ? true : false;
+      Questions.add(new Question(tempRow.getString(0), tempRow.getString(1), tempRow.getString(2), tempRow.getString(3), tempRow.getString(4), tempRow.getString(5), imageQuestion, answerQuestion, i, filename_));
+    }
+    for (int i = 0; i < Questions.size(); i++) {
+     questionRow = answerTable.addRow();
+     questionRow.setInt("Question", i);
+     questionRow.setInt("Answer", 0);
+     saveTable(answerTable, filename);
+  }
+ }   
 }

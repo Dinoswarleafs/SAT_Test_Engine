@@ -7,6 +7,6 @@ void setup() {
 
 void draw() {
  background(0); 
- main.display();
  main.update();
+ main.display();
 }

@@ -27,7 +27,7 @@ class Main_Menu {
    testAmount = countFiles();
    testButton = new RectButton[testAmount];
    QM = new Question_Manager();
-   timer = new Timer(25, 0);
+   timer = new Timer(65, 0);
    timerButton = new RectButton(width - 100, 0, 100, 50, color(125, 40), true, false);
    sectionButton = new RectButton(width/2 - 50, height/2 + 100, 100, 50, color(125), true, false);
    float sectionLength = width / (float) (testAmount / 2); 
@@ -155,7 +155,6 @@ class Main_Menu {
      currentScreen++;
      delay(100);
     }    
-    timer.reset();
     break;
    case 3 :
     if (QM.lastR < QM.currentQuestion)
@@ -169,13 +168,19 @@ class Main_Menu {
    case 9 : 
     if (QM.lastMC < QM.currentQuestion)
      currentScreen++;  
-    if (currentScreen == 5 && timer.endTime != 2100) {
-     timer.setEnd(35,0);
+    if (currentScreen == 5 && timer.endTime != 35 * 60000) {
+     timer.reset();
+     timer.setEnd(35, 0);
     }
-    else if (currentScreen == 7 && timer.endTime != 1500)
-     timer.setEnd(25,0);
-    else if (currentScreen == 9 && timer.endTime != 3300)
+    else if (currentScreen == 7 && timer.endTime != 25 * 60000) {
+     timer.reset();
+     timer.setEnd(25, 0);
+    }
+    else if (currentScreen == 9 && timer.endTime != 55 * 60000) {
+     timer.reset();
      timer.setEnd(55, 0);
+    }
+     
     QM.update();
     timer.update();
     if (!timer.isActive)

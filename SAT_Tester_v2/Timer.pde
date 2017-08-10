@@ -23,8 +23,8 @@ class Timer {
    isStarted = false;
   }
   if (isActive && !isPaused) {
-    currentTime = millis() - startTime;
-    timeLeft = endTime - currentTime;
+    currentTime = millis();
+    timeLeft = (startTime + endTime) - currentTime;
     minutes = (timeLeft / 1000) / 60;
     seconds = (timeLeft / 1000) % 60;
   }
@@ -50,17 +50,16 @@ class Timer {
  void unpause() {
    isPaused = false; 
    timePaused = millis() - currentTime;
-   endTime += currentTime;
+   endTime += timePaused;   
  }
  
  void reset() {
    isActive = false;
    isStarted = false;
-   startTime = 0;
  }
  
  void setEnd(int minutes_, int seconds_) {
-   endTime = minutes_ * 60 + seconds_;
+   endTime = minutes_ * 60000 + seconds_ * 1000;
  }
   
 }

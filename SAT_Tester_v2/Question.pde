@@ -9,7 +9,7 @@ class Question {
  // --- 
  
  
- // Starting Button Co-Ordinates (AKA location of first thing) = 
+// Starting Button Co-Ordinates (AKA location of first thing) = 
  
  // Default (without a prompt or image) :
  // (If you have 1 image setting on, the other will take this #) 
@@ -26,27 +26,72 @@ class Question {
  float pQuestionY  = 75;
  
  float pAnswerX    = 740;
- float pAnswerY    = 200;
+ float pAnswerY    = 100;
  
- // Both Question & Answer Images :
- 
- float bIQuestionX = 50;
- float bIQuestionY = 75;
- 
- float bIAnswerX1  = 100;
- float bIAnswerX2  = 740;
- float bIAnswerY   = 380; 
- 
- // Question Image Only :
+ // Question Image :
  
  float qIQuestionX = 50;
  float qIQuestionY = 50;
  
- // Answer Image Only :
+ // Answer Image  :
  
  float aIAnswerX   = 100;
  float aIAnswerX2  = 740;
  float aIAnswerY   = 380;
+ 
+// Distance from button to elements & element size
+// (T = Text difference, I = Image Difference, Size = ... Size)
+
+ // Default :
+ 
+ float qTDiffX = 44;
+ float qTDiffY = -15;
+ float qTSizeX = 100;
+ float qTSizeY = 165;
+ 
+ float aTDiffX = 114;
+ float aTDiffY = 280;
+ float aTSizeX = 980;
+ float aTSizeY = 100;
+ 
+ 
+ // Prompt :
+ 
+ float promptX = 30;
+ float promptY = 75;
+ float pSizeX = 660;
+ float pSizeY = 570;
+ 
+ float qPDiffX = 50;
+ float qPDiffY = -15;
+ float qPSizeX = 480;
+ float qPSizeY = 165;
+ 
+ float aPDiffX = 50;
+ float aPDiffY = 65;
+ float aPSizeX = 460;
+ float aPSizeY = 150;
+ 
+ // Question Image :
+ 
+ float qQTDiffX = 40;
+ float qQTDiffY = -25;
+ float qQTSizeX = 460;
+ float qQTSizeY = 310;
+ 
+ float qQIDiffX = 610;
+ float qQIDiffY = -25;
+ float qQISizeX = 500;
+ float qQISizeY = 250;
+ 
+ // Answer Image :
+ 
+ float aAIDiffX = 50;
+ float aAIDiffX2 = 710;
+ float aAIDiffY = -75;
+ float aAISizeX = 150;
+ float aAISizeY = 150;
+ 
  
 // Distance between answers
 
@@ -56,7 +101,7 @@ class Question {
  
  // Prompt :
  
- float aPSpread   = 100;
+ float aPSpread   = 135;
  
  // Both Images :
  
@@ -68,7 +113,7 @@ class Question {
  
  // Answer Images :
  
- float aASpread   = 100;
+ float aASpread   = 180;
  
  // Default 
   
@@ -92,66 +137,9 @@ class Question {
  String prompt;
  PVector qPos;
  PVector[] aPos, pPos;
- PVector[] qISize, aTSize, qTSize;
- float aSpread;
-
-
-
- Question(String question_, String answers_[]) {
-  aFont = createFont("Arial", 24);
-  buttons = new CircleButton[5];
-  answers = new String[4];
-  question = question_;
-  arrayCopy(answers_, answers);
-  aPos = new PVector[2];
- }
-
- Question(String question_, String ans1, String ans2, String ans3, String ans4) {
-  aFont = createFont("Arial", 24);
-  buttons = new CircleButton[5];
-  answers = new String[4];
-  question = question_;
-  answers = new String[] {
-   ans1,
-   ans2,
-   ans3,
-   ans4
-  };
-  imageQuestion = false;
-  imageAnswer = false;
-  aPos = new PVector[2];
- }
-
- Question(String type_, String question_, int ans1, int ans2, int ans3, int ans4) {
-  type = type_;
-  aFont = createFont("Arial", 24);
-  buttons = new CircleButton[5];
-  answers = new String[4];
-  question = question_;
-  answers = new String[] {
-   str(ans1), str(ans2), str(ans3), str(ans4)
-  };
-  aPos = new PVector[2];
-  imageQuestion = false;
-  imageAnswer = false;
- }
-
- Question(String type_, String question_, String ans1, String ans2, String ans3, String ans4) {
-  type = type_;
-  aFont = createFont("Arial", 24);
-  buttons = new CircleButton[5];
-  answers = new String[4];
-  question = question_;
-  answers = new String[] {
-   ans1,
-   ans2,
-   ans3,
-   ans4
-  };
-  aPos = new PVector[2];
-  imageQuestion = false;
-  imageAnswer = false;
- }
+ PVector[] qIPos, qTPos, aTPos;
+ PVector[] aIPos;
+ float aSpread, aISpread, aTSpread;
 
  Question(String type_, String question_, int ans1, int ans2, int ans3, int ans4, boolean imageQuestion_, boolean imageAnswer_, int qIndex_, String testName_) {
   type = type_;
@@ -165,10 +153,15 @@ class Question {
    str(ans1), str(ans2), str(ans3), str(ans4)
   };
   aPos = new PVector[2];
+  pPos = new PVector[2];
+  qIPos = new PVector[2];
+  qTPos = new PVector[2];
+  aTPos = new PVector[2];
+  aIPos = new PVector[2];
   images = new PImage[5];
   imageQuestion = imageQuestion_;
   imageAnswer = imageAnswer_;
-  formatQuestions();
+  formatElements();
  }
 
  Question(String type_, String question_, String ans1, String ans2, String ans3, String ans4, boolean imageQuestion_, boolean imageAnswer_, int qIndex_, String testName_) {
@@ -186,10 +179,15 @@ class Question {
    ans4
   };
   aPos = new PVector[2];
+  pPos = new PVector[2];
+  qIPos = new PVector[2];
+  qTPos = new PVector[2];
+  aTPos = new PVector[2];
+  aIPos = new PVector[2];
   images = new PImage[5];
   imageQuestion = imageQuestion_;
   imageAnswer = imageAnswer_;
-  formatQuestions();
+  formatElements();
  }
 
  Question(String type_, String question_, String ans1, String ans2, String ans3, String ans4, int promptNum_, int qIndex_, String testName_) {
@@ -208,43 +206,74 @@ class Question {
    ans4
   };
   aPos = new PVector[2];
+  pPos = new PVector[2];
+  qIPos = new PVector[2];
+  qTPos = new PVector[2];
+  aTPos = new PVector[2];
+  aIPos = new PVector[2];
   Table promptTable = loadTable("testing/test_questions/prompts/" + testName + ".csv", "header");
   TableRow tempRow = promptTable.getRow(promptNum);
   prompt = tempRow.getString(0);
-  formatQuestions();
+  formatElements();
  }
 
- void formatQuestions() {
+ void formatElements() {
   if (promptNum != 0) {
     qPos = new PVector(pQuestionX, pQuestionY);
     aPos[0] = new PVector(pAnswerX, pAnswerY);
+    pPos[0] = new PVector(promptX, promptY);
+    pPos[1] = new PVector(pSizeX, pSizeY); 
+    qTPos[0] = new PVector(qPDiffX, qPDiffY);
+    qTPos[1] = new PVector(qPSizeX, qPSizeY);
+    aTPos[0] = new PVector(aPDiffX, aPDiffY);
+    aTPos[1] = new PVector(aPSizeX, aPSizeY);
     aSpread = aPSpread; 
   } else {
    if (imageQuestion && imageAnswer) {
-    qPos = new PVector(bIQuestionX, bIQuestionY);
-    aPos[0] = new PVector(bIAnswerX1, bIAnswerY);
-    aPos[1] = new PVector(bIAnswerX2, bIAnswerY); 
+    qPos = new PVector(qIQuestionX, qIQuestionY);
+    aPos[0] = new PVector(aIAnswerX, aIAnswerY);
+    aPos[1] = new PVector(aIAnswerX2, aIAnswerY); 
+    qTPos[0] = new PVector(qQTDiffX, qQTDiffY);
+    qTPos[1] = new PVector(qQTSizeX, qQTSizeY);
+    qIPos[0] = new PVector(qQIDiffX, qQIDiffY);
+    qIPos[1] = new PVector(qQISizeX, qQISizeY);
+    aIPos[0] = new PVector(aAIDiffX, aAIDiffY);
+    aIPos[1] = new PVector(aAISizeX, aAISizeY);
     aSpread = aBSpread;
-    images[0] = loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + ".png");
+    importImage(0);
     for (int i = 1; i < images.length; i++)
-     images[i] = loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + str(i) + ".png");
+     importImage(i);
    } else if (imageQuestion) {
     qPos = new PVector(qIQuestionX, qIQuestionY);
     aPos[0] = new PVector(answerX, answerY);
+    qTPos[0] = new PVector(qQTDiffX, qQTDiffY);
+    qTPos[1] = new PVector(qQTSizeX, qQTSizeY);
+    qIPos[0] = new PVector(qQIDiffX, qQIDiffY);
+    qIPos[1] = new PVector(qQISizeX, qQISizeY);
+    aTPos[0] = new PVector(aTDiffX, aTDiffY);
+    aTPos[1] = new PVector(aTSizeX, aTSizeY);
     aSpread = aQSpread;
-    images[0] = loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + ".png");
+    importImage(0);
    } else if (imageAnswer) {
     qPos = new PVector(questionX, questionY);
     aPos[0] = new PVector(aIAnswerX, aIAnswerY);
     aPos[1] = new PVector(aIAnswerX2, aIAnswerY);   
+    qTPos[0] = new PVector(qTDiffX, qTDiffY);
+    qTPos[1] = new PVector(qTSizeX, qTSizeY);
+    aIPos[0] = new PVector(aAIDiffX, aAIDiffY);
+    aIPos[1] = new PVector(aAISizeX, aAISizeY);
     aSpread = aASpread;
     for (int i = 1; i < images.length; i++)
-     images[i] = loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + str(i) + ".png");
+     importImage(i);
     }
     else {
      qPos = new PVector(questionX, questionY);
      aPos[0] = new PVector(answerX, answerY);
-     aSpread = 100;
+     qTPos[0] = new PVector(qTDiffX, qTDiffY);
+     qTPos[1] = new PVector(qTSizeX, qTSizeY);
+     aTPos[0] = new PVector(aTDiffX, aTDiffY);
+     aTPos[1] = new PVector(aTSizeX, aTSizeY);
+     aSpread = aDSpread;
     }
   }  
   buttons[0] = new CircleButton(qPos.x, qPos.y, 50, 135, false);
@@ -259,40 +288,21 @@ class Question {
   }
  }
 
- void formatDisplay() {
-  if (promptNum != 0) {
-    text(question, 770, 60, 480, 165);
-  for (int i = 0; i < answers.length; i++) {
-   float yPosition = 200 + 100 * (i + 1);
-   text(answers[i], 790, yPosition - 10, 460, yPosition + 50);
-  }
-  text(prompt, 30, 75, 660, 570);    
-  }
-  else {
-  if (imageQuestion && imageAnswer) {
-   text(question, 90, 50, 460, 310);
-   image(images[0], 690, 50, 500, 250);
+ void displayElements() {
+  if (promptNum != 0)
+   text(prompt, promptX, promptY, pSizeX, pSizeY);
+  text(question, qPos.x + qTPos[0].x, qPos.y + qTPos[0].y, qTPos[1].x, qTPos[1].y);
+  if (imageQuestion)
+   image(images[0], qPos.x + qIPos[0].x, qPos.y + qIPos[0].y, qIPos[1].x, qIPos[1].y);
+  if (imageAnswer) {
    for (int i = 1; i < (buttons.length / 2) + 1; i++)
-    image(images[i], 150, 380 + 180 * (i - 1) - 75, 150, 150);
+    image(images[i], aPos[0].x + aIPos[0].x, aPos[0].y + aIPos[0].y + aSpread * i, aIPos[1].x, aIPos[1].y);
    for (int i = (buttons.length / 2) + 1; i < buttons.length; i++)
-    image(images[i], 790, 380 + 180 * (i - 3) - 75, 150, 150);
-  } else if (imageQuestion) {
-   text(question, 90, 50, 460, 310);
-   image(images[0], 400, 50, 1190, 360);
-   for (int i = 0; i < answers.length; i++) {
-    float yPosition = 280 + 100 * i;
-    text(answers[i], 300, yPosition, 950, yPosition + 50);
-   }
-  } else if (imageAnswer) {
-   text(question, 200, 85, 900, 165);
-   for (int i = 1; i < (buttons.length / 2) + 1; i++)
-    image(images[i], 150, 380 + 180 * (i - 1) - 75, 150, 150);
-   for (int i = (buttons.length / 2) + 1; i < buttons.length; i++)
-    image(images[i], 790, 380 + 180 * (i - 3) - 75, 150, 150);
-   } else text(question, 200, 85, 900, 165);
-  }
+    image(images[i], aPos[1].x + aIPos[0].x + aAIDiffX2, aPos[1].y + aIPos[0].y + aSpread * i, aIPos[1].x, aIPos[1].y);    
+  } else 
+   for (int i = 0; i < answers.length; i++)
+    text(answers[i], aPos[0].x + aTPos[0].x, aPos[0].y + aTPos[0].y + aSpread * i, aTPos[1].x, aTPos[1].y);
  }
-
 
  void display() {
   for (int i = 0; i < buttons.length; i++)
@@ -302,12 +312,7 @@ class Question {
   textAlign(LEFT);
   fill(255);
   // Drawing text FIX ALLIGNMENT
-  if (promptNum == 0)
-  for (int i = 0; i < answers.length; i++) {
-   float yPosition = 280 + 100 * i;
-   text(answers[i], 300, yPosition, 1250, yPosition);
-  }
-  formatDisplay();
+  displayElements();
  }
 
  int update() {
@@ -323,5 +328,11 @@ class Question {
    }
   }
   return -1;
+ }
+ 
+ void importImage(int index) {
+  if (index == 0)
+   loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + ".png");
+  else loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + str(index) + ".png");
  }
 }

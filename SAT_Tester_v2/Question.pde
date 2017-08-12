@@ -7,6 +7,76 @@ class Question {
  // ---
  // Literally rework everything LOL
  // --- 
+ 
+ 
+ // Starting Button Co-Ordinates (AKA location of first thing) = 
+ 
+ // Default (without a prompt or image) :
+ // (If you have 1 image setting on, the other will take this #) 
+  
+ float questionX   = 156;
+ float questionY   = 100;
+ 
+ float answerX     = 256;
+ float answerY     = 200;
+ 
+ // Prompt :
+ 
+ float pQuestionX  = 720;
+ float pQuestionY  = 75;
+ 
+ float pAnswerX    = 740;
+ float pAnswerY    = 200;
+ 
+ // Both Question & Answer Images :
+ 
+ float bIQuestionX = 50;
+ float bIQuestionY = 75;
+ 
+ float bIAnswerX1  = 100;
+ float bIAnswerX2  = 740;
+ float bIAnswerY   = 380; 
+ 
+ // Question Image Only :
+ 
+ float qIQuestionX = 50;
+ float qIQuestionY = 50;
+ 
+ // Answer Image Only :
+ 
+ float aIAnswerX   = 100;
+ float aIAnswerX2  = 740;
+ float aIAnswerY   = 380;
+ 
+// Distance between answers
+
+ // Default :
+ 
+ float aDSpread   = 100;
+ 
+ // Prompt :
+ 
+ float aPSpread   = 100;
+ 
+ // Both Images :
+ 
+ float aBSpread   = 180;
+ 
+ // Question Images :
+ 
+ float aQSpread   = 100;
+ 
+ // Answer Images :
+ 
+ float aASpread   = 100;
+ 
+ // Default 
+  
+ // Prompt
+  
+ // Image Answers
+ 
+ 
 
  int selectedAnswer;
  PFont aFont, qFont;
@@ -20,6 +90,11 @@ class Question {
  String testName;
  int promptNum = 0;
  String prompt;
+ PVector qPos;
+ PVector[] aPos, pPos;
+ PVector[] qISize, aTSize, qTSize;
+ float aSpread;
+
 
 
  Question(String question_, String answers_[]) {
@@ -28,10 +103,7 @@ class Question {
   answers = new String[4];
   question = question_;
   arrayCopy(answers_, answers);
-  buttons[0] = new CircleButton(156, 100, 50, 135, false);
-  for (int i = 1; i < buttons.length; i++) {
-   buttons[i] = new CircleButton(256, 200 + 100 * i, 50, 135);
-  }
+  aPos = new PVector[2];
  }
 
  Question(String question_, String ans1, String ans2, String ans3, String ans4) {
@@ -45,11 +117,9 @@ class Question {
    ans3,
    ans4
   };
-  buttons[0] = new CircleButton(156, 100, 50, 135, false);
-  for (int i = 1; i < buttons.length; i++)
-   buttons[i] = new CircleButton(256, 200 + 100 * i, 50, 135);
   imageQuestion = false;
   imageAnswer = false;
+  aPos = new PVector[2];
  }
 
  Question(String type_, String question_, int ans1, int ans2, int ans3, int ans4) {
@@ -61,9 +131,7 @@ class Question {
   answers = new String[] {
    str(ans1), str(ans2), str(ans3), str(ans4)
   };
-  buttons[0] = new CircleButton(156, 100, 50, 135, false);
-  for (int i = 1; i < buttons.length; i++)
-   buttons[i] = new CircleButton(256, 200 + 100 * i, 50, 135);
+  aPos = new PVector[2];
   imageQuestion = false;
   imageAnswer = false;
  }
@@ -80,9 +148,7 @@ class Question {
    ans3,
    ans4
   };
-  buttons[0] = new CircleButton(156, 100, 50, 135, false);
-  for (int i = 1; i < buttons.length; i++)
-   buttons[i] = new CircleButton(256, 200 + 100 * i, 50, 135);
+  aPos = new PVector[2];
   imageQuestion = false;
   imageAnswer = false;
  }
@@ -98,9 +164,7 @@ class Question {
   answers = new String[] {
    str(ans1), str(ans2), str(ans3), str(ans4)
   };
-  buttons[0] = new CircleButton(156, 100, 50, 135, false);
-  for (int i = 1; i < buttons.length; i++)
-   buttons[i] = new CircleButton(256, 200 + 100 * i, 50, 135);
+  aPos = new PVector[2];
   images = new PImage[5];
   imageQuestion = imageQuestion_;
   imageAnswer = imageAnswer_;
@@ -121,9 +185,7 @@ class Question {
    ans3,
    ans4
   };
-  buttons[0] = new CircleButton(156, 100, 50, 135, false);
-  for (int i = 1; i < buttons.length; i++)
-   buttons[i] = new CircleButton(256, 200 + 100 * i, 50, 135);
+  aPos = new PVector[2];
   images = new PImage[5];
   imageQuestion = imageQuestion_;
   imageAnswer = imageAnswer_;
@@ -145,43 +207,55 @@ class Question {
    ans3,
    ans4
   };
+  aPos = new PVector[2];
   Table promptTable = loadTable("testing/test_questions/prompts/" + testName + ".csv", "header");
   TableRow tempRow = promptTable.getRow(promptNum);
   prompt = tempRow.getString(0);
-  println(prompt);
-  buttons[0] = new CircleButton(156, 100, 50, 135, false);
-  for (int i = 1; i < buttons.length; i++)
-   buttons[i] = new CircleButton(256, 200 + 100 * i, 50, 135);
   formatQuestions();
  }
 
  void formatQuestions() {
   if (promptNum != 0) {
-    buttons[0] = new CircleButton(720, 75, 50, 135, false);
-    for (int i = 1; i < buttons.length; i++)
-     buttons[i] = new CircleButton(740, 200 + 100 * i, 50, 135);    
+    qPos = new PVector(pQuestionX, pQuestionY);
+    aPos[0] = new PVector(pAnswerX, pAnswerY);
+    aSpread = aPSpread; 
   } else {
    if (imageQuestion && imageAnswer) {
-    buttons[0] = new CircleButton(50, 75, 50, 135, false);
-    for (int i = 1; i < (buttons.length / 2) + 1; i++)
-     buttons[i] = new CircleButton(100, 380 + 180 * (i - 1), 50, 135);
-    for (int i = (buttons.length / 2) + 1; i < buttons.length; i++)
-     buttons[i] = new CircleButton(740, 380 + 180 * (i - 3), 50, 135);
+    qPos = new PVector(bIQuestionX, bIQuestionY);
+    aPos[0] = new PVector(bIAnswerX1, bIAnswerY);
+    aPos[1] = new PVector(bIAnswerX2, bIAnswerY); 
+    aSpread = aBSpread;
     images[0] = loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + ".png");
     for (int i = 1; i < images.length; i++)
      images[i] = loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + str(i) + ".png");
    } else if (imageQuestion) {
-    buttons[0] = new CircleButton(50, 50, 50, 135, false);
+    qPos = new PVector(qIQuestionX, qIQuestionY);
+    aPos[0] = new PVector(answerX, answerY);
+    aSpread = aQSpread;
     images[0] = loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + ".png");
    } else if (imageAnswer) {
-    for (int i = 1; i < (buttons.length / 2) + 1; i++)
-     buttons[i] = new CircleButton(100, 380 + 180 * (i - 1), 50, 135);
-    for (int i = (buttons.length / 2) + 1; i < buttons.length; i++)
-     buttons[i] = new CircleButton(740, 380 + 180 * (i - 3), 50, 135);
-    for (int i = 1; i < images.length; i++) {
+    qPos = new PVector(questionX, questionY);
+    aPos[0] = new PVector(aIAnswerX, aIAnswerY);
+    aPos[1] = new PVector(aIAnswerX2, aIAnswerY);   
+    aSpread = aASpread;
+    for (int i = 1; i < images.length; i++)
      images[i] = loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + str(i) + ".png");
     }
-   }
+    else {
+     qPos = new PVector(questionX, questionY);
+     aPos[0] = new PVector(answerX, answerY);
+     aSpread = 100;
+    }
+  }  
+  buttons[0] = new CircleButton(qPos.x, qPos.y, 50, 135, false);
+  if (!imageAnswer)
+   for (int i = 1; i < buttons.length; i++)
+    buttons[i] = new CircleButton(aPos[0].x, aPos[0].y + aSpread * i, 50, 135); 
+  else {
+    for (int i = 1; i < (buttons.length / 2) + 1; i++)
+     buttons[i] = new CircleButton(aPos[0].x, aPos[0].y + aSpread * (i - 1), 50, 135);
+    for (int i = (buttons.length / 2) + 1; i < buttons.length; i++)
+     buttons[i] = new CircleButton(aPos[1].x, aPos[1].y + aSpread * (i - 3), 50, 135);    
   }
  }
 

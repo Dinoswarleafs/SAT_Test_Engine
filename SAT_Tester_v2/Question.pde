@@ -5,7 +5,7 @@ class Question {
 
  // To Do:
  // ---
- // Literally rework everything LOL
+ // Fix Constructor
  // --- 
  
  
@@ -68,7 +68,7 @@ class Question {
  float qPSizeY = 165;
  
  float aPDiffX = 50;
- float aPDiffY = 65;
+ float aPDiffY = 53;
  float aPSizeX = 460;
  float aPSizeY = 150;
  
@@ -124,7 +124,7 @@ class Question {
  
 
  int selectedAnswer;
- PFont aFont, qFont;
+ PFont aFont;
  CircleButton[] buttons;
  String question;
  String[] answers;
@@ -140,10 +140,10 @@ class Question {
  PVector[] qIPos, qTPos, aTPos;
  PVector[] aIPos;
  float aSpread, aISpread, aTSpread;
+ 
 
  Question(String type_, String question_, int ans1, int ans2, int ans3, int ans4, boolean imageQuestion_, boolean imageAnswer_, int qIndex_, String testName_) {
   type = type_;
-  aFont = createFont("Arial", 24);
   buttons = new CircleButton[5];
   answers = new String[4];
   question = question_;
@@ -191,6 +191,7 @@ class Question {
  }
 
  Question(String type_, String question_, String ans1, String ans2, String ans3, String ans4, int promptNum_, int qIndex_, String testName_) {
+  aFont = createFont("Georgia", 12);
   type = type_;
   aFont = createFont("Arial", 24);
   buttons = new CircleButton[5];
@@ -286,9 +287,11 @@ class Question {
     for (int i = (buttons.length / 2) + 1; i < buttons.length; i++)
      buttons[i] = new CircleButton(aPos[1].x, aPos[1].y + aSpread * (i - 3), 50, 135);    
   }
+  aFont = createFont("Arial", 24);
  }
 
  void displayElements() {
+  textAlign(LEFT);
   if (promptNum != 0)
    text(prompt, promptX, promptY, pSizeX, pSizeY);
   text(question, qPos.x + qTPos[0].x, qPos.y + qTPos[0].y, qTPos[1].x, qTPos[1].y);
@@ -299,9 +302,11 @@ class Question {
     image(images[i], aPos[0].x + aIPos[0].x, aPos[0].y + aIPos[0].y + aSpread * i, aIPos[1].x, aIPos[1].y);
    for (int i = (buttons.length / 2) + 1; i < buttons.length; i++)
     image(images[i], aPos[1].x + aIPos[0].x + aAIDiffX2, aPos[1].y + aIPos[0].y + aSpread * i, aIPos[1].x, aIPos[1].y);    
-  } else 
+  } else {
+   textAlign(LEFT, CENTER);
    for (int i = 0; i < answers.length; i++)
     text(answers[i], aPos[0].x + aTPos[0].x, aPos[0].y + aTPos[0].y + aSpread * i, aTPos[1].x, aTPos[1].y);
+  }
  }
 
  void display() {
@@ -309,9 +314,7 @@ class Question {
    buttons[i].display();
   // Text Attributes
   textFont(aFont);
-  textAlign(LEFT);
   fill(255);
-  // Drawing text FIX ALLIGNMENT
   displayElements();
  }
 

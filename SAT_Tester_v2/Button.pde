@@ -9,9 +9,23 @@ abstract class Button {
   /// Nothing RN
   // ---
  
+  // Location :
+   // CircleButton = Center coordinates
+   // Rectbutton = Top left coordinates
+  // Size = Length & width of button
+  
+  // nColor = Normal color of button in a resting state
+  // hColor = Highlighted color of button
+  
+  // isOver = If the mouse is over
+  // isSelected = If the button is selected
+  // isSelectable = If the button changes color when moused over
+  
   PVector location, size;
-  color nColor, hColor; // nColor is the "normal" color, hColor is the highlighted color
+  color nColor, hColor; 
   boolean isOver, isSelected, isSelectable;
+  
+  
   
   Button(float locX_, float locY_, float sizeX_, float sizeY_, color nColor_) {
     location = new PVector(locX_, locY_);
@@ -40,6 +54,8 @@ class CircleButton extends Button {
   super(locX_, locY_, diameter_, diameter_, nColor_, isSelectable_); 
  }
  
+ 
+ // If the button is selectable (able to be highlighted), see if the mouse is over the button and store it in isOver
  void update() {
   if (isSelectable) { 
   isOver = overButton(); 
@@ -48,6 +64,8 @@ class CircleButton extends Button {
   }
  }
   
+ // If the mouse is neither over the button, or if the button isn't selected, fill it as the normal color
+ // If either is true fill it with the highlighted color  
  void display() {
   if (!(isOver || isSelected))
    fill(nColor);
@@ -57,11 +75,13 @@ class CircleButton extends Button {
  
  boolean overButton() {
    // Checks if the mouse is within the circle
+   // If the line from the center of the circle to the mouse is less than the radius of the circle, return true
    float disX = location.x - mouseX; 
    float disY = location.y - mouseY; 
    return (sqrt(sq(disX) + sq(disY))) < size.x/2;
  }
  
+   // If the mouse is down while over the circle, return true
  boolean clickedButton() {
    return isOver && mousePressed; 
  }
@@ -69,6 +89,8 @@ class CircleButton extends Button {
 
 class RectButton extends Button {
   
+ // isHoldable :
+  // After being pressed, if it's false will return to the normal color
  boolean isHoldable;
  
  RectButton(float locX_, float locY_, float sizeX, float sizeY, color nColor_) {
@@ -81,6 +103,8 @@ class RectButton extends Button {
   isHoldable = isHeld_;
  }
  
+ 
+ // If isHoldable is false, make it so the button doesn't stay highlighted after being clicked
  void update() {
   if (!isHoldable)
   isSelected = false;

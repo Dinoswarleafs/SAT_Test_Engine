@@ -152,11 +152,12 @@ class RectButton extends Button {
 class ScrollBar extends Button {
   
   boolean isActivated;
-  float mouseOffset, initialY;
+  float mouseOffset, initialY, previousY, maxHeight;
   
  ScrollBar(float locX_, float locY_, float sizeX, float sizeY, color nColor_) {
   super(locX_, locY_, sizeX, sizeY, nColor_); 
   initialY = locY_;
+  maxHeight = height - (initialY + size.y);
  }
  
  void update() {
@@ -165,10 +166,11 @@ class ScrollBar extends Button {
    isActivated = true;
    mouseOffset = mouseY - location.y;
   }
+  previousY = location.y;
   if (isActivated && mousePressed)
    location.y = lerp(location.y, mouseY - mouseOffset, .5);
   else isActivated = false;
-  location.y = constrain(location.y, initialY, height - (initialY + size.y));
+  location.y = constrain(location.y, initialY, maxHeight);
  }
  
  void display() {
@@ -178,6 +180,16 @@ class ScrollBar extends Button {
   rect(location.x, location.y, size.x, size.y);
  }
  
+ float getScrollValue() {
+  float scrollValue = map(location.y, initialY, maxHeight, 0, 4000); 
+  return scrollValue;
+ }
+ 
+ void setLocationY(float scrollValue) {
+  float locationY = map(-scrollValue, 0, 4000, initialY, maxHeight);
+  location = new PVector(location.x, locationY);
+ }
+ 
  boolean overButton() {
    return (mouseX >= location.x && mouseX <= location.x + size.x &&
            mouseY >= location.y && mouseY <= location.y + size.y);
@@ -185,6 +197,10 @@ class ScrollBar extends Button {
  
  boolean clickedButton() {
    return isOver && mousePressed; 
+ }
+ 
+ boolean wasMoved() {
+  return location.y != previousY; 
  }
   
 }

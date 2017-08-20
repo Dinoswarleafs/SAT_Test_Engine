@@ -60,7 +60,7 @@ class Question {
  float promptX = 15;
  float promptY = 50;
  float pSizeX = 660;
- float pSizeY = 570;
+ float pSizeY = 650;
  
  float qPDiffX = 50;
  float qPDiffY = -15;
@@ -287,7 +287,6 @@ class Question {
     promptImage.textFont(aFont);
     promptImage.endDraw();
   }  
-  scrollCount = (int) promptX;
   buttons[0] = new CircleButton(qPos.x, qPos.y, 50, 135, false);
   buttons[0].setText(str(qIndex + 1));
   scrollBar = new ScrollBar((promptX + pSizeX) - 10, promptY, 20, 100, color(125));
@@ -329,6 +328,12 @@ class Question {
  }
 
  void display() {
+  if (scrollCount != scrollBar.getScrollValue())
+   if (scrollBar.wasMoved())
+    scrollCount = (int) -scrollBar.getScrollValue();
+   else
+    scrollBar.setLocationY(scrollCount); 
+  println(scrollCount);
   for (int i = 0; i < buttons.length; i++)
    buttons[i].display();
   // Text Attributes

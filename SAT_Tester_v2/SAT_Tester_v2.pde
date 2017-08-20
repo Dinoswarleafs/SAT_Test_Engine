@@ -10,3 +10,9 @@ void draw() {
  main.update();
  main.display();
 }
+
+void mouseWheel(MouseEvent event) {
+ float e = -event.getCount();
+ int scrollAmount = 50;
+ main.QM.Questions.get(main.QM.currentQuestion).getScrollValue(e * scrollAmount);
+}

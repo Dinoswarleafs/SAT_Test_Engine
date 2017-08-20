@@ -57,8 +57,8 @@ class Question {
  
  // Prompt :
  
- float promptX = 30;
- float promptY = 75;
+ float promptX = 15;
+ float promptY = 50;
  float pSizeX = 660;
  float pSizeY = 570;
  
@@ -126,6 +126,7 @@ class Question {
  int selectedAnswer;
  PFont aFont;
  CircleButton[] buttons;
+ ScrollBar scrollBar;
  String question;
  String[] answers;
  String type;
@@ -140,6 +141,8 @@ class Question {
  PVector[] qIPos, qTPos, aTPos;
  PVector[] aIPos;
  float aSpread, aISpread, aTSpread;
+ int scrollCount;
+ PGraphics promptImage;
  
 
  Question(String type_, String question_, int ans1, int ans2, int ans3, int ans4, boolean imageQuestion_, boolean imageAnswer_, int qIndex_, String testName_) {
@@ -228,7 +231,7 @@ class Question {
     qTPos[1] = new PVector(qPSizeX, qPSizeY);
     aTPos[0] = new PVector(aPDiffX, aPDiffY);
     aTPos[1] = new PVector(aPSizeX, aPSizeY);
-    aSpread = aPSpread; 
+    aSpread = aPSpread;
   } else {
    if (imageQuestion && imageAnswer) {
     qPos = new PVector(qIQuestionX, qIQuestionY);
@@ -277,7 +280,17 @@ class Question {
      aSpread = aDSpread;
     }
   }  
+  aFont = createFont("Arial", 24);
+  if (promptNum != 0) {
+    promptImage = createGraphics((int) pSizeX, (int) pSizeY);
+    promptImage.beginDraw();
+    promptImage.textFont(aFont);
+    promptImage.endDraw();
+  }  
+  scrollCount = (int) promptX;
   buttons[0] = new CircleButton(qPos.x, qPos.y, 50, 135, false);
+  buttons[0].setText(str(qIndex + 1));
+  scrollBar = new ScrollBar((promptX + pSizeX) - 10, promptY, 20, 100, color(125));
   if (!imageAnswer)
    for (int i = 1; i < buttons.length; i++)
     buttons[i] = new CircleButton(aPos[0].x, aPos[0].y + aSpread * i, 50, 135); 
@@ -287,13 +300,19 @@ class Question {
     for (int i = (buttons.length / 2) + 1; i < buttons.length; i++)
      buttons[i] = new CircleButton(aPos[1].x, aPos[1].y + aSpread * (i - 3), 50, 135);    
   }
-  aFont = createFont("Arial", 24);
  }
 
  void displayElements() {
   textAlign(LEFT);
-  if (promptNum != 0)
-   text(prompt, promptX, promptY, pSizeX, pSizeY);
+  if (promptNum != 0) {
+   promptImage.beginDraw();
+   promptImage.background(0);
+   promptImage.text(prompt, promptX, scrollCount, pSizeX, 4000); 
+   promptImage.endDraw();
+   image(promptImage, promptX, promptY);
+   scrollBar.display();
+  }
+  fill(255);
   text(question, qPos.x + qTPos[0].x, qPos.y + qTPos[0].y, qTPos[1].x, qTPos[1].y);
   if (imageQuestion)
    image(images[0], qPos.x + qIPos[0].x, qPos.y + qIPos[0].y, qIPos[1].x, qIPos[1].y);
@@ -330,6 +349,8 @@ class Question {
     return i;
    }
   }
+  if (promptNum != 0)
+   scrollBar.update();
   return -1;
  }
  
@@ -337,5 +358,10 @@ class Question {
   if (index == 0)
    loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + ".png");
   else loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + str(index) + ".png");
+ }
+ 
+ void getScrollValue(float value) {
+  scrollCount += (int) value;
+  scrollCount = constrain(scrollCount, -4000, 0);
  }
 }

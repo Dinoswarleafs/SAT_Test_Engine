@@ -46,12 +46,17 @@ abstract class Button {
 
 class CircleButton extends Button {
  
+ PFont bFont;
+ String bText;
+ 
  CircleButton(float locX_, float locY_, float diameter_, color nColor_) {
-  super(locX_, locY_, diameter_, diameter_, nColor_); 
+  super(locX_, locY_, diameter_, diameter_, nColor_);
+  bFont = createFont("Arial", 24);
  }
  
  CircleButton(float locX_, float locY_, float diameter_, color nColor_, boolean isSelectable_) {
   super(locX_, locY_, diameter_, diameter_, nColor_, isSelectable_); 
+  bFont = createFont("Arial", 24);
  }
  
  
@@ -71,6 +76,14 @@ class CircleButton extends Button {
    fill(nColor);
   else fill(hColor); 
   ellipse(location.x, location.y, size.x, size.y);
+  if (bText != null) {
+   textAlign(CENTER);
+   textFont(bFont);
+   fill(0);
+   if (int(bText) < 10)
+    text(bText, location.x + 1, location.y + 7);
+   else text(bText, location.x, location.y + 7);
+  }
  }
  
  boolean overButton() {
@@ -84,6 +97,10 @@ class CircleButton extends Button {
    // If the mouse is down while over the circle, return true
  boolean clickedButton() {
    return isOver && mousePressed; 
+ }
+ 
+ void setText(String text_) {
+  bText = text_; 
  }
 }
 
@@ -130,4 +147,44 @@ class RectButton extends Button {
  boolean clickedButton() {
    return isOver && mousePressed; 
  }
+}
+
+class ScrollBar extends Button {
+  
+  boolean isActivated;
+  float mouseOffset, initialY;
+  
+ ScrollBar(float locX_, float locY_, float sizeX, float sizeY, color nColor_) {
+  super(locX_, locY_, sizeX, sizeY, nColor_); 
+  initialY = locY_;
+ }
+ 
+ void update() {
+  isOver = overButton(); 
+  if (clickedButton() && !isActivated) {
+   isActivated = true;
+   mouseOffset = mouseY - location.y;
+  }
+  if (isActivated && mousePressed)
+   location.y = lerp(location.y, mouseY - mouseOffset, .5);
+  else isActivated = false;
+  location.y = constrain(location.y, initialY, height - (initialY + size.y));
+ }
+ 
+ void display() {
+  if (!(isOver || isActivated))
+   fill(nColor);
+  else fill(hColor); 
+  rect(location.x, location.y, size.x, size.y);
+ }
+ 
+ boolean overButton() {
+   return (mouseX >= location.x && mouseX <= location.x + size.x &&
+           mouseY >= location.y && mouseY <= location.y + size.y);
+ }
+ 
+ boolean clickedButton() {
+   return isOver && mousePressed; 
+ }
+  
 }

@@ -37,8 +37,14 @@ class Question_Manager {
      saveTable(answerTable, filename);
     }
     previousAnswer = selectedAnswer;
-    nextButton.update();
-    lastButton.update();
+    if ((!(currentQuestion == Questions.size() - 1)))
+     nextButton.update();
+    if (!(currentQuestion == 0) && 
+         !(currentQuestion - 1 == lastR ||
+         currentQuestion - 1 == lastW ||
+         currentQuestion - 1 == lastM ||
+         currentQuestion - 1 == lastMC))
+     lastButton.update();
     if (nextButton.isSelected && !(currentQuestion == Questions.size() - 1)) {
      currentQuestion++;
      delay(100);
@@ -72,7 +78,7 @@ class Question_Manager {
       imageQuestion = (tempRow.getString(6).equals("T")) ? true : false;
       imageAnswer = (tempRow.getString(7).equals("T")) ? true : false;
       promptNum = int(tempRow.getString(8));
-      println(tempRow.getString(8));
+      println("Loading Prompt : " + tempRow.getString(8));
       if (tempRow.getString(8).equals(""))
        Questions.add(new Question(tempRow.getString(0), tempRow.getString(1), tempRow.getString(2), tempRow.getString(3), tempRow.getString(4), tempRow.getString(5), imageQuestion, imageAnswer, i, filename_));
       else Questions.add(new Question(tempRow.getString(0), tempRow.getString(1), tempRow.getString(2), tempRow.getString(3), tempRow.getString(4), tempRow.getString(5), promptNum, i, filename_));

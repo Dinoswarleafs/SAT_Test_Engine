@@ -7,121 +7,7 @@ class Question {
  // ---
  // Fix Constructor
  // --- 
- 
- 
-// Starting Button Co-Ordinates (AKA location of first thing) = 
- 
- // Default (without a prompt or image) :
- // (If you have 1 image setting on, the other will take this #) 
-  
- float questionX   = 156;
- float questionY   = 100;
- 
- float answerX     = 256;
- float answerY     = 200;
- 
- // Prompt :
- 
- float pQuestionX  = 720;
- float pQuestionY  = 75;
- 
- float pAnswerX    = 740;
- float pAnswerY    = 100;
- 
- // Question Image :
- 
- float qIQuestionX = 50;
- float qIQuestionY = 50;
- 
- // Answer Image  :
- 
- float aIAnswerX   = 100;
- float aIAnswerX2  = 740;
- float aIAnswerY   = 380;
- 
-// Distance from button to elements & element size
-// (T = Text difference, I = Image Difference, Size = ... Size)
 
- // Default :
- 
- float qTDiffX = 44;
- float qTDiffY = -15;
- float qTSizeX = 100;
- float qTSizeY = 165;
- 
- float aTDiffX = 114;
- float aTDiffY = 280;
- float aTSizeX = 980;
- float aTSizeY = 100;
- 
- 
- // Prompt :
- 
- float promptX = 15;
- float promptY = 50;
- float pSizeX = 660;
- float pSizeY = 650;
- 
- float qPDiffX = 50;
- float qPDiffY = -15;
- float qPSizeX = 480;
- float qPSizeY = 165;
- 
- float aPDiffX = 50;
- float aPDiffY = 53;
- float aPSizeX = 460;
- float aPSizeY = 150;
- 
- // Question Image :
- 
- float qQTDiffX = 40;
- float qQTDiffY = -25;
- float qQTSizeX = 460;
- float qQTSizeY = 310;
- 
- float qQIDiffX = 610;
- float qQIDiffY = -25;
- float qQISizeX = 500;
- float qQISizeY = 250;
- 
- // Answer Image :
- 
- float aAIDiffX = 50;
- float aAIDiffX2 = 710;
- float aAIDiffY = -75;
- float aAISizeX = 150;
- float aAISizeY = 150;
- 
- 
-// Distance between answers
-
- // Default :
- 
- float aDSpread   = 100;
- 
- // Prompt :
- 
- float aPSpread   = 135;
- 
- // Both Images :
- 
- float aBSpread   = 180;
- 
- // Question Images :
- 
- float aQSpread   = 100;
- 
- // Answer Images :
- 
- float aASpread   = 180;
- 
- // Default 
-  
- // Prompt
-  
- // Image Answers
- 
- 
 
  int selectedAnswer;
  PFont aFont;
@@ -143,7 +29,7 @@ class Question {
  float aSpread, aISpread, aTSpread;
  int scrollCount;
  PGraphics promptImage;
- 
+
 
  Question(String type_, String question_, int ans1, int ans2, int ans3, int ans4, boolean imageQuestion_, boolean imageAnswer_, int qIndex_, String testName_) {
   type = type_;
@@ -223,81 +109,80 @@ class Question {
 
  void formatElements() {
   if (promptNum != 0) {
-    qPos = new PVector(pQuestionX, pQuestionY);
-    aPos[0] = new PVector(pAnswerX, pAnswerY);
-    pPos[0] = new PVector(promptX, promptY);
-    pPos[1] = new PVector(pSizeX, pSizeY); 
-    qTPos[0] = new PVector(qPDiffX, qPDiffY);
-    qTPos[1] = new PVector(qPSizeX, qPSizeY);
-    aTPos[0] = new PVector(aPDiffX, aPDiffY);
-    aTPos[1] = new PVector(aPSizeX, aPSizeY);
-    aSpread = aPSpread;
+   qPos = new PVector(SAT.pQuestionX, SAT.pQuestionY);
+   aPos[0] = new PVector(SAT.pAnswerX, SAT.pAnswerY);
+   pPos[0] = new PVector(SAT.promptX, SAT.promptY);
+   pPos[1] = new PVector(SAT.pSizeX, SAT.pSizeY);
+   qTPos[0] = new PVector(SAT.qPDiffX, SAT.qPDiffY);
+   qTPos[1] = new PVector(SAT.qPSizeX, SAT.qPSizeY);
+   aTPos[0] = new PVector(SAT.aPDiffX, SAT.aPDiffY);
+   aTPos[1] = new PVector(SAT.aPSizeX, SAT.aPSizeY);
+   scrollBar = new ScrollBar((SAT.promptX + SAT.pSizeX) - 10, SAT.promptY, 20, 100, 0, SAT.graphicHeight, color(125), true);      
+   aSpread = SAT.aPSpread;
   } else {
    if (imageQuestion && imageAnswer) {
-    qPos = new PVector(qIQuestionX, qIQuestionY);
-    aPos[0] = new PVector(aIAnswerX, aIAnswerY);
-    aPos[1] = new PVector(aIAnswerX2, aIAnswerY); 
-    qTPos[0] = new PVector(qQTDiffX, qQTDiffY);
-    qTPos[1] = new PVector(qQTSizeX, qQTSizeY);
-    qIPos[0] = new PVector(qQIDiffX, qQIDiffY);
-    qIPos[1] = new PVector(qQISizeX, qQISizeY);
-    aIPos[0] = new PVector(aAIDiffX, aAIDiffY);
-    aIPos[1] = new PVector(aAISizeX, aAISizeY);
-    aSpread = aBSpread;
+    qPos = new PVector(SAT.qIQuestionX, SAT.qIQuestionY);
+    aPos[0] = new PVector(SAT.aIAnswerX, SAT.aIAnswerY);
+    aPos[1] = new PVector(SAT.aIAnswerX2, SAT.aIAnswerY);
+    qTPos[0] = new PVector(SAT.qQTDiffX, SAT.qQTDiffY);
+    qTPos[1] = new PVector(SAT.qQTSizeX, SAT.qQTSizeY);
+    qIPos[0] = new PVector(SAT.qQIDiffX, SAT.qQIDiffY);
+    qIPos[1] = new PVector(SAT.qQISizeX, SAT.qQISizeY);
+    aIPos[0] = new PVector(SAT.aAIDiffX, SAT.aAIDiffY);
+    aIPos[1] = new PVector(SAT.aAISizeX, SAT.aAISizeY);
+    aSpread = SAT.aBSpread;
     importImage(0);
     for (int i = 1; i < images.length; i++)
      importImage(i);
    } else if (imageQuestion) {
-    qPos = new PVector(qIQuestionX, qIQuestionY);
-    aPos[0] = new PVector(answerX, answerY);
-    qTPos[0] = new PVector(qQTDiffX, qQTDiffY);
-    qTPos[1] = new PVector(qQTSizeX, qQTSizeY);
-    qIPos[0] = new PVector(qQIDiffX, qQIDiffY);
-    qIPos[1] = new PVector(qQISizeX, qQISizeY);
-    aTPos[0] = new PVector(aTDiffX, aTDiffY);
-    aTPos[1] = new PVector(aTSizeX, aTSizeY);
-    aSpread = aQSpread;
+    qPos = new PVector(SAT.qIQuestionX, SAT.qIQuestionY);
+    aPos[0] = new PVector(SAT.answerX, SAT.answerY);
+    qTPos[0] = new PVector(SAT.qQTDiffX, SAT.qQTDiffY);
+    qTPos[1] = new PVector(SAT.qQTSizeX, SAT.qQTSizeY);
+    qIPos[0] = new PVector(SAT.qQIDiffX, SAT.qQIDiffY);
+    qIPos[1] = new PVector(SAT.qQISizeX, SAT.qQISizeY);
+    aTPos[0] = new PVector(SAT.aTDiffX, SAT.aTDiffY);
+    aTPos[1] = new PVector(SAT.aTSizeX, SAT.aTSizeY);
+    aSpread = SAT.aQSpread;
     importImage(0);
    } else if (imageAnswer) {
-    qPos = new PVector(questionX, questionY);
-    aPos[0] = new PVector(aIAnswerX, aIAnswerY);
-    aPos[1] = new PVector(aIAnswerX2, aIAnswerY);   
-    qTPos[0] = new PVector(qTDiffX, qTDiffY);
-    qTPos[1] = new PVector(qTSizeX, qTSizeY);
-    aIPos[0] = new PVector(aAIDiffX, aAIDiffY);
-    aIPos[1] = new PVector(aAISizeX, aAISizeY);
-    aSpread = aASpread;
+    qPos = new PVector(SAT.questionX, SAT.questionY);
+    aPos[0] = new PVector(SAT.aIAnswerX, SAT.aIAnswerY);
+    aPos[1] = new PVector(SAT.aIAnswerX2, SAT.aIAnswerY);
+    qTPos[0] = new PVector(SAT.qTDiffX, SAT.qTDiffY);
+    qTPos[1] = new PVector(SAT.qTSizeX, SAT.qTSizeY);
+    aIPos[0] = new PVector(SAT.aAIDiffX, SAT.aAIDiffY);
+    aIPos[1] = new PVector(SAT.aAISizeX, SAT.aAISizeY);
+    aSpread = SAT.aASpread;
     for (int i = 1; i < images.length; i++)
      importImage(i);
-    }
-    else {
-     qPos = new PVector(questionX, questionY);
-     aPos[0] = new PVector(answerX, answerY);
-     qTPos[0] = new PVector(qTDiffX, qTDiffY);
-     qTPos[1] = new PVector(qTSizeX, qTSizeY);
-     aTPos[0] = new PVector(aTDiffX, aTDiffY);
-     aTPos[1] = new PVector(aTSizeX, aTSizeY);
-     aSpread = aDSpread;
-    }
-  }  
+   } else {
+    qPos = new PVector(SAT.questionX, SAT.questionY);
+    aPos[0] = new PVector(SAT.answerX, SAT.answerY);
+    qTPos[0] = new PVector(SAT.qTDiffX, SAT.qTDiffY);
+    qTPos[1] = new PVector(SAT.qTSizeX, SAT.qTSizeY);
+    aTPos[0] = new PVector(SAT.aTDiffX, SAT.aTDiffY);
+    aTPos[1] = new PVector(SAT.aTSizeX, SAT.aTSizeY);
+    aSpread = SAT.aDSpread;
+   }
+  }
   aFont = createFont("Arial", 24);
   if (promptNum != 0) {
-    promptImage = createGraphics((int) pSizeX, (int) pSizeY);
-    promptImage.beginDraw();
-    promptImage.textFont(aFont);
-    promptImage.endDraw();
-  }  
+   promptImage = createGraphics((int) SAT.pSizeX, (int) SAT.pSizeY);
+   promptImage.beginDraw();
+   promptImage.textFont(aFont);
+   promptImage.endDraw();
+  }
   buttons[0] = new CircleButton(qPos.x, qPos.y, 50, 135, false);
   buttons[0].setText(str(qIndex + 1));
-  scrollBar = new ScrollBar((promptX + pSizeX) - 10, promptY, 20, 100, color(125));
   if (!imageAnswer)
    for (int i = 1; i < buttons.length; i++)
-    buttons[i] = new CircleButton(aPos[0].x, aPos[0].y + aSpread * i, 50, 135); 
+    buttons[i] = new CircleButton(aPos[0].x, aPos[0].y + aSpread * i, 50, 135);
   else {
-    for (int i = 1; i < (buttons.length / 2) + 1; i++)
-     buttons[i] = new CircleButton(aPos[0].x, aPos[0].y + aSpread * (i - 1), 50, 135);
-    for (int i = (buttons.length / 2) + 1; i < buttons.length; i++)
-     buttons[i] = new CircleButton(aPos[1].x, aPos[1].y + aSpread * (i - 3), 50, 135);    
+   for (int i = 1; i < (buttons.length / 2) + 1; i++)
+    buttons[i] = new CircleButton(aPos[0].x, aPos[0].y + aSpread * (i - 1), 50, 135);
+   for (int i = (buttons.length / 2) + 1; i < buttons.length; i++)
+    buttons[i] = new CircleButton(aPos[1].x, aPos[1].y + aSpread * (i - 3), 50, 135);
   }
  }
 
@@ -306,9 +191,9 @@ class Question {
   if (promptNum != 0) {
    promptImage.beginDraw();
    promptImage.background(0);
-   promptImage.text(prompt, promptX, scrollCount, pSizeX, 4000); 
+   promptImage.text(prompt, SAT.promptX, scrollCount, SAT.pSizeX, SAT.graphicHeight);
    promptImage.endDraw();
-   image(promptImage, promptX, promptY);
+   image(promptImage, SAT.promptX, SAT.promptY);
    scrollBar.display();
   }
   fill(255);
@@ -319,7 +204,7 @@ class Question {
    for (int i = 1; i < (buttons.length / 2) + 1; i++)
     image(images[i], aPos[0].x + aIPos[0].x, aPos[0].y + aIPos[0].y + aSpread * i, aIPos[1].x, aIPos[1].y);
    for (int i = (buttons.length / 2) + 1; i < buttons.length; i++)
-    image(images[i], aPos[1].x + aIPos[0].x + aAIDiffX2, aPos[1].y + aIPos[0].y + aSpread * i, aIPos[1].x, aIPos[1].y);    
+    image(images[i], aPos[1].x + aIPos[0].x + SAT.aAIDiffX2, aPos[1].y + aIPos[0].y + aSpread * i, aIPos[1].x, aIPos[1].y);
   } else {
    textAlign(LEFT, CENTER);
    for (int i = 0; i < answers.length; i++)
@@ -330,9 +215,9 @@ class Question {
  void display() {
   if (scrollCount != scrollBar.getScrollValue())
    if (scrollBar.wasMoved())
-    scrollCount = (int) -scrollBar.getScrollValue();
+    scrollCount = (int) - scrollBar.getScrollValue();
    else
-    scrollBar.setLocationY(scrollCount); 
+    scrollBar.setLocationY(scrollCount);
   println(scrollCount);
   for (int i = 0; i < buttons.length; i++)
    buttons[i].display();
@@ -358,15 +243,15 @@ class Question {
    scrollBar.update();
   return -1;
  }
- 
+
  void importImage(int index) {
   if (index == 0)
    loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + ".png");
   else loadImage("/testing/test_questions/test_images/" + testName + "/IMG" + qIndex + str(index) + ".png");
  }
- 
+
  void getScrollValue(float value) {
   scrollCount += (int) value;
-  scrollCount = constrain(scrollCount, -4000, 0);
+  scrollCount = constrain(scrollCount, (int) -SAT.graphicHeight, 0);
  }
 }

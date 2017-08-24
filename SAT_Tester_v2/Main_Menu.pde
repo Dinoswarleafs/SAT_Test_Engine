@@ -76,14 +76,6 @@ class Main_Menu {
     text("Click the button when you're ready to start.", width / 2, height / 4 + 175);
     sectionButton.display();
     break;
-   case 3:
-   case 5:
-   case 7:
-   case 9:
-    QM.display();
-    timer.display();
-    timerButton.display();
-    break;
    case 4:
     textSize(40);
     textAlign(CENTER);
@@ -123,6 +115,14 @@ class Main_Menu {
     text("... That sounds kinda fun. I'll do that later. ANYWAY, hope you did well. All the info will be after this part", width / 2, height / 4 + 150);
     sectionButton.display();
     break;
+   case 3:
+   case 5:
+   case 7:
+   case 9:
+    QM.display();
+    timer.display();
+    timerButton.display();
+    break; 
   }
  }
 
@@ -147,9 +147,13 @@ class Main_Menu {
     }
     break;
    case 2:
+    QM.resetScrollBar(0);
    case 4:
+    QM.resetScrollBar(1);
    case 6:
+    QM.resetScrollBar(2);
    case 8:
+    QM.resetScrollBar(3);
     sectionButton.update();
     if (sectionButton.clickedButton()) {
      currentScreen++;
@@ -157,16 +161,16 @@ class Main_Menu {
     }
     break;
    case 3:
-    if (QM.lastQ[0] < QM.currentQuestion)
+    if (QM.lastQ[0] <= QM.currentQuestion)
      currentScreen++;
    case 5:
-    if (QM.lastQ[1] < QM.currentQuestion)
+    if (QM.lastQ[1] <= QM.currentQuestion)
      currentScreen++;
    case 7:
-    if (QM.lastQ[2] < QM.currentQuestion)
+    if (QM.lastQ[2] <= QM.currentQuestion)
      currentScreen++;
    case 9:
-    if (QM.lastQ[3] < QM.currentQuestion)
+    if (QM.lastQ[3] <= QM.currentQuestion)
      currentScreen++;
     if (currentScreen == 5 && timer.endTime != 35 * 60000) {
      timer.reset();

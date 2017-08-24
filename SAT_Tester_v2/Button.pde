@@ -208,13 +208,13 @@ class ScrollBar extends Button {
   return scrollValue;
  }
  
- void setLocationY(float scrollValue) {
+ void setLocation(float scrollValue) {
   float locationPos;
   if (isVertical) {
    locationPos = map(-scrollValue, startValue, endValue, initialPos, maxPos);
    location = new PVector(location.x, locationPos);
   } else {
-   locationPos = map(-scrollValue, startValue, endValue, initialPos, maxPos);
+   locationPos = map(scrollValue, startValue, endValue, initialPos, maxPos);
    location = new PVector(locationPos, location.y);    
   }
  }

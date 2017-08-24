@@ -217,8 +217,7 @@ class Question {
    if (scrollBar.wasMoved())
     scrollCount = (int) - scrollBar.getScrollValue();
    else
-    scrollBar.setLocationY(scrollCount);
-  println(scrollCount);
+    scrollBar.setLocation(scrollCount);
   for (int i = 0; i < buttons.length; i++)
    buttons[i].display();
   // Text Attributes
